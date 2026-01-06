@@ -2,117 +2,197 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Diary | {{ title }}</title>
+    <title>My Melody AI | {{ title }}</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
         /* site colors */
         :root { 
             --pink-soft: #ffe4e9; 
             --pink-bright: #ff85a2; 
             --strawberry: #ff4d6d; 
-            --bg-pattern: #fff5f6; 
+            --chat-bg: rgba(255, 255, 255, 0.9);
         }
 
         body {
-            font-family: sans-serif;
+            font-family: 'Quicksand', sans-serif;
             background-image: url("{{ url_for('static', filename='fundo.png') }}");
             background-repeat: repeat;
             background-size: 250px; 
             background-attachment: fixed; 
             background-color: #E89EB8; 
-            color: #7a3e48;
             margin: 0;
-            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        /* content panel */
-        .content-panel {
-            max-width: 800px;
-            margin: 24px auto;
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(8px);
-            border-radius: 28px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(122,62,72,0.1);
+        /* chat window */
+        .chat-container {
+            width: 90%;
+            max-width: 500px;
+            height: 600px;
+            background: var(--chat-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 4px solid var(--pink-soft);
+            overflow: hidden;
         }
 
-        h1 { font-family: 'Pacifico', cursive; color: var(--strawberry); text-align: center; font-size: 3em; }
+        /* chat header */
+        .chat-header {
+            background: var(--pink-soft);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 2px solid var(--pink-bright);
+        }
 
-        /* diary entry layout */
-        .diary-entry {
-            background: white;
-            padding: 25px;
+        .avatar-mini {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid var(--pink-bright);
+            /* # PLACEHOLDER FOR AVATAR IMAGE # */
+            background-image: url("{{ url_for('static', filename='melody_avatar.png') }}");
+            background-size: cover;
+        }
+
+        .chat-status {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-status b { color: var(--strawberry); font-size: 1.1em; }
+        .chat-status span { font-size: 0.8em; color: #888; }
+
+        /* messages area */
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .bubble {
+            max-width: 80%;
+            padding: 12px 16px;
             border-radius: 20px;
-            margin-bottom: 30px;
-            border-left: 8px solid var(--pink-bright);
+            font-size: 0.95em;
+            line-height: 1.4;
+            position: relative;
         }
 
-        .entry-date {
-            font-weight: bold;
-            color: var(--pink-bright);
-            font-size: 0.9em;
-            display: block;
-            margin-bottom: 10px;
+        /* melody message */
+        .bubble.bot {
+            align-self: flex-start;
+            background: white;
+            color: #444;
+            border: 1px solid var(--pink-soft);
+            border-bottom-left-radius: 5px;
         }
 
-        .entry-title {
-            color: var(--strawberry);
-            font-size: 1.5em;
-            margin: 0 0 10px 0;
+        /* user message */
+        .bubble.user {
+            align-self: flex-end;
+            background: var(--strawberry);
+            color: white;
+            border-bottom-right-radius: 5px;
         }
 
-        /* cute-link animation */
-        .cute-link {
-            text-decoration: underline;
-            text-decoration-color: var(--pink-bright);
-            color: var(--strawberry);
-            transition: all 0.3s ease;
-            display: inline-block;
+        /* input area */
+        .chat-input-area {
+            padding: 20px;
+            background: white;
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
-        .cute-link:hover {
-            transform: scale(0.95);
-            opacity: 0.7;
+        .chat-input {
+            flex: 1;
+            border: 2px solid var(--pink-soft);
+            padding: 10px 15px;
+            border-radius: 25px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .chat-input:focus { border-color: var(--pink-bright); }
+
+        .send-btn {
+            background: var(--strawberry);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
             cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn-github { 
-            background: var(--strawberry); 
-            color: white !important; 
-            padding: 12px 24px; 
-            border-radius: 30px; 
-            display: block; 
-            margin: 40px auto 0; 
+        .send-btn:hover { transform: scale(1.1); background: var(--pink-bright); }
+
+        .btn-home {
+            margin-top: 30px;
             text-decoration: none;
-            text-align: center;
-            width: fit-content;
-            box-shadow: 0 6px 0 #d93d5a;
+            color: white;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            transition: 0.3s;
         }
+
+        .btn-home:hover { background: var(--strawberry); }
     </style>
 </head>
 <body>
-    <div class="content-panel">
-        <h1>🍓 Engineering Diary</h1>
-        
-        <div class="diary-entry">
-            <span class="entry-date">January 06, 2026</span>
-            <h2 class="entry-title">First Steps in Computer Engineering</h2>
-            <p>Today I started organizing my studies and building this portfolio. It feels great to see everything coming together!</p>
-            <a href="#" class="cute-link">Read more...</a>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="avatar-mini"></div>
+            <div class="chat-status">
+                <b>My Melody AI</b>
+                <span>Online | Math Tutor 🍓</span>
+            </div>
         </div>
 
-        <div class="diary-entry">
-            <span class="entry-date">January 05, 2026</span>
-            <h2 class="entry-title">Logic Gates and Circuit Design</h2>
-            <p>Reviewing basic logic gates and how they form complex processors. Engineering is amazing.</p>
-            <a href="#" class="cute-link">Read more...</a>
+        <div class="chat-messages">
+            <div class="bubble bot">
+                Hello! I'm My Melody! Ask me anything about complex math or just chat with me! 🌸
+            </div>
+            
+            <div class="bubble user">
+                Hi! Can you explain what a Riemann Zeta Function is?
+            </div>
+
+            <div class="bubble bot">
+                Oh, that's a fascinating problem! It's related to the distribution of prime numbers... 🍓
+            </div>
         </div>
 
-        <a href="/" class="btn-github">💖 Back Home</a>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Type a message...">
+            <button class="send-btn">➔</button>
+        </div>
     </div>
+
+    <a href="/" class="btn-home">💖 Back Home</a>
+
 </body>
 </html>
