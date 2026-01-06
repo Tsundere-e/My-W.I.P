@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Sweet Portfolio | {{ user.login }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        /* A MÁGICA ROSA ACONTECE AQUI */
+        :root { 
+            --pink-soft: #ffe4e9; 
+            --pink-bright: #ff85a2; 
+            --strawberry: #ff4d6d; 
+            --bg-pattern: #fff5f6; 
+        }
+
+        body {
+        font-family: 'Varela Round', sans-serif;
+        /* O segredo está aqui: chamando a imagem da pasta static */
+        background-image: url("{{ url_for('static', filename='fundo.png') }}");
+        background-repeat: repeat; /* Isso faz a imagem cobrir tudo */
+        background-size: 250px; /* Ajuste esse valor para os desenhos ficarem maiores ou menores */
+        background-attachment: fixed; /* O fundo fica parado enquanto você rola o site */
+        background-color: #fff5f6; /* Cor de fundo caso a imagem demore a carregar */
+        color: #7a3e48;
+        margin: 0;
+        padding: 40px;
+        }
+
+        .header-wrap { text-align: center; }
+
+        .header { margin-bottom: 50px; position: relative; display: inline-block; }
+
+        /* Avatar simples do GitHub, centralizado e sem enfeites */
+        .avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+            object-fit: cover;
+            background: transparent;
+            border: 4px solid rgba(255,255,255,0.9);
+        }
+
+        /* Animação opcional para o babadinho girar devagar */
+        @keyframes rotate-babado {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+        }
+
+        h1 { font-size: 2.8em; color: var(--strawberry); margin-top: 20px; text-shadow: 2px 2px white; }
+        .bio { font-size: 1.2em; max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+        }
+
+        .card { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 35px; 
+            border: 3px solid var(--pink-soft); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative;
+            box-shadow: 0 8px 0 var(--pink-soft);
+        }
+
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--pink-bright); 
+            box-shadow: 0 12px 0 var(--pink-bright);
+        }
+
+        /* Ícone de Morango em cada card */
+        .card::after { 
+            content: '🍓'; 
+            position: absolute; 
+            bottom: 15px; 
+            right: 20px; 
+            font-size: 1.5em; 
+        }
+
+        h3 a { color: var(--strawberry); text-decoration: none; font-size: 1.4em; }
+        
+        .lang-tag {
+            background: var(--pink-soft);
+            color: var(--strawberry);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .btn-github { 
+            background: var(--strawberry); 
+            color: white !important; 
+            padding: 8px 16px; 
+            border-radius: 30px; 
+            display: block; 
+            margin: 20px auto; 
+            font-size: 1em;
+            box-shadow: 0 6px 0 #d93d5a;
+            transition: 0.12s;
+            text-decoration: none;
+            text-align: center;
+            width: auto;
+            max-width: 80%;
+        }
+
+        .btn-github:active { transform: translateY(4px); box-shadow: 0 4px 0 #d93d5a; }
+        /* Efeito Gelatina */
+        .squishy {
+        transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        cursor: pointer;
+        }
+
+        /* Diminui quando o mouse entra */
+        .squishy:hover {
+        transform: scale(0.9);
+        }
+
+        .project-card {
+        background-color: rgba(255, 255, 255, 0.9); /* Branco com 90% de transparência */
+        backdrop-filter: blur(5px); /* Efeito de vidro embaçado atrás do cartão */
+        border: 2px solid var(--pink-bright);
+        border-radius: 20px;
+        padding: 20px;
+        /* ... resto do seu código ... */
+}
+
+        /* Painel principal com fundo translúcido e bordas suaves para legibilidade */
+        .content-panel {
+            max-width: 1100px;
+            margin: 24px auto;
+            background: rgba(255,255,255,0.55);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(122,62,72,0.06);
+            position: relative;
+            overflow: visible;
+        }
+
+        .content-panel::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: calc(100% + 40px);
+            height: calc(100% + 36px);
+            background: rgba(255,255,255,0.28);
+            filter: blur(18px);
+            border-radius: 34px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Se o Ruffle estiver sendo injetado pelo navegador, escondemos seus elementos */
+        ruffle-embed, ruffle-player, .ruffle, .RufflePlayer, embed[type="application/x-shockwave-flash"], object[type="application/x-shockwave-flash"] {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* Mais regras para bloquear qualquer injeção futura com nomes parecidos */
+        *[class*="ruffle" i], *[id*="ruffle" i], [data-ruffle], [data-ruffle-version] {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* Volta ao normal quando o mouse sai (o transition acima cuida do 'pop') */
+    </style>
+</head>
+<body>
+    <audio id="popSound" src="https://www.fesliyanstudios.com/play-mp3/7008" preload="auto"></audio>
+    <div class="content-panel">
+    <div class="header-wrap">
+    <div class="header">
+
+    <img src="{{ user.avatar_url }}" class="avatar" alt="Avatar de {{ user.login }}">
+
+    <h1 class="squishy">Olá, eu sou {{ user.name if user.name else user.login }}! ✨</h1>
+    </div>
+    </div>
+
+    <p class="bio">{{ user.bio if user.bio else "Futura engenheira de computação em busca de morangos e códigos! 🍓💻" }}</p>
+
+    <div class="grid">
+        {% if repos and repos|length > 0 and not repos.message %}
+            {% for repo in repos[:6] %}
+            <div class="card squishy" onmouseenter="playPop()">
+                <h3><a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a></h3>
+                <p>{{ repo.description if repo.description else "Um projeto secreto e maravilhoso." }}</p>
+                {% if repo.language %}
+                    <span class="lang-tag"># {{ repo.language }}</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="card squishy" onmouseenter="playPop()">
+                <h3><a href="#">🍓 Projeto Moranguinho</a></h3>
+                <p>Meu primeiro código em Python! Em breve estarei criando robôs fofos aqui.</p>
+                <span class="lang-tag"># Python</span>
+            </div>
+            <div class="card squishy" onmouseenter="playPop()">
+                <h3><a href="#">🎀 My Melody API</a></h3>
+                <p>Uma ideia super legal para organizar tarefas usando o tema da Sanrio.</p>
+                <span class="lang-tag"># Flask</span>
+            </div>
+            <div class="card squishy" onmouseenter="playPop()">
+                <h3><a href="#">⭐ Engenharia do Futuro</a></h3>
+                <p>Repositório para meus estudos da faculdade de engenharia.</p>
+                <span class="lang-tag"># Learning</span>
+            </div>
+        {% endif %}
+    </div>
+
+    <a href="{{ user.html_url }}" class="btn-github squishy" onmouseenter="playPop()" target="_blank">
+        💖 Ver meu GitHub completo 🍓
+    </a>
+    </div>
+    <script>
+    function playPop() {
+        const audio = document.getElementById('popSound');
+        audio.currentTime = 0; // Reinicia para poder tocar várias vezes seguidas
+        audio.play().catch(e => console.log("Aguardando interação para tocar som"));
+    }
+    
+    /* Remove programaticamente qualquer elemento Ruffle/Flash que apareça no DOM */
+    (function removeRuffle() {
+        const sel = 'ruffle-embed, ruffle-player, .ruffle, .RufflePlayer, [class*="ruffle" i], [id*="ruffle" i], [data-ruffle], [data-ruffle-version], embed[type="application/x-shockwave-flash"], object[type="application/x-shockwave-flash"]';
+        function clean() {
+            try {
+                document.querySelectorAll(sel).forEach(el => el.remove());
+            } catch (e) {
+                // segurança caso query falhe em algum navegador
+            }
+        }
+        // Limpeza inicial
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', clean);
+        } else {
+            clean();
+        }
+        // Observador para remover injeções futuras (extensões/plugins)
+        try {
+            const mo = new MutationObserver(clean);
+            mo.observe(document.documentElement || document.body, { childList: true, subtree: true });
+        } catch (e) {}
+    })();
+    </script>
+</body>
+</html>
