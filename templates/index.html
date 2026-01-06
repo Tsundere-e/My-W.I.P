@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Sweet Portfolio | {{ user.login }}</title>
@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <style>
-        /* cor do site*/
+        /* site colors */
         :root { 
             --pink-soft: #ffe4e9; 
             --pink-bright: #ff85a2; 
@@ -19,7 +19,7 @@
 
         body {
         font-family: sans-serif;
-        /*fundo my melody */
+        /* background pattern */
         background-image: url("{{ url_for('static', filename='fundo.png') }}");
         background-repeat: repeat;
         background-size: 250px; 
@@ -34,7 +34,7 @@
 
         .header { margin-bottom: 50px; position: relative; display: inline-block; }
 
-        /* Avatar do GitHub */
+        /* GitHub avatar */
         .avatar {
             width: 160px;
             height: 160px;
@@ -73,7 +73,7 @@
             box-shadow: 0 12px 0 var(--pink-bright);
         }
 
-        /* Ícone de Morango em cada card */
+        /* Strawberry icon on each card */
         .card::after { 
             content: '🍓'; 
             position: absolute; 
@@ -110,13 +110,13 @@
         }
 
         .btn-github:active { transform: translateY(4px); box-shadow: 0 4px 0 #d93d5a; }
-        /* Efeito Gelatina */
+        /* Jelly effect */
         .squishy {
         transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
         cursor: pointer;
         }
 
-        /* Diminui quando o mouse entra */
+        /* Shrinks slightly on hover */
         .squishy:hover {
         transform: scale(0.9);
         }
@@ -129,7 +129,7 @@
         padding: 20px;
         }
 
-        /* Painel principal com fundo translúcido p legibilidade */
+        /* Main panel with translucent background for readability */
         .content-panel {
             max-width: 1100px;
             margin: 24px auto;
@@ -158,7 +158,7 @@
             pointer-events: none;
         }
 
-        /* Se o Ruffle estiver sendo injetado pelo navegador, escondemos seus elementos */
+        /* If Ruffle is injected by the browser, hide its elements */
         ruffle-embed, ruffle-player, .ruffle, .RufflePlayer, embed[type="application/x-shockwave-flash"], object[type="application/x-shockwave-flash"] {
             display: none !important;
             visibility: hidden !important;
@@ -174,13 +174,13 @@
     <div class="header-wrap">
     <div class="header">
 
-    <img src="{{ user.avatar_url }}" class="avatar" alt="Avatar de {{ user.login }}">
+    <img src="{{ user.avatar_url }}" class="avatar" alt="Avatar of {{ user.login }}">
 
-    <h1 class="squishy">Olá, eu sou {{ user.name if user.name else user.login }}! ✨</h1>
+    <h1 class="squishy">Hi, I'm {{ user.name if user.name else user.login }}! ✨</h1>
     </div>
     </div>
 
-    <p class="bio">{{ user.bio if user.bio else "Futura engenheira de computação em busca de morangos e códigos! 🍓💻" }}</p>
+    <p class="bio">{{ user.bio if user.bio else "Future computer engineering student seeking strawberries and code! 🍓💻" }}</p>
 
     <div class="grid">
         {% if repos and repos|length > 0 and not repos.message %}
@@ -195,50 +195,47 @@
                 {% endfor %}
             {% endif %}
             <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="#">🍓 Projeto Moranguinho</a></h3>
-                <p>Meus códigos em Python! Em breve estarei criando aqui.</p>
+                <h3><a href="#">🍓 Strawberry Project</a></h3>
+                <p>My Python code! I'll be adding projects here soon.</p>
                 <span class="lang-tag"># Python</span>
             </div>
             <div class="card squishy" onmouseenter="playPop()">
                 <h3><a href="#">🎀 My Melody API</a></h3>
-                <p>Template pro meu bot AI conversational do discord</p>
-                <span class="lang-tag"># APIKey</span>
+                <p>Template for my AI conversational Discord bot</p>
+                <span class="lang-tag"># API</span>
             </div>
             <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="#">⭐ Engenharia da computação</a></h3>
-                <p>Repositório para meus estudos da faculdade de engenharia.</p>
+                <h3><a href="#">⭐ Computer Engineering</a></h3>
+                <p>Repository for my engineering studies.</p>
                 <span class="lang-tag"># Learning</span>
             </div>
     </div>
 
     <a href="{{ user.html_url }}" class="btn-github squishy" onmouseenter="playPop()" target="_blank">
-        💖 Veja meu GitHub completo 🍓
+        💖 View my full GitHub 🍓
     </a>
     </div>
     <script>
+    /* Play pop sound when a card is hovered */
     function playPop() {
         const audio = document.getElementById('popSound');
-        audio.currentTime = 0; // Reinicia para poder tocar várias vezes seguidas
-        audio.play().catch(e => console.log("Aguardando interação para tocar som"));
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
     }
-    
-    /* Remove programaticamente qualquer elemento Ruffle/Flash que apareça no DOM */
+
+    /* Remove injected Ruffle/Flash elements from the DOM */
     (function removeRuffle() {
         const sel = 'ruffle-embed, ruffle-player, .ruffle, .RufflePlayer, [class*="ruffle" i], [id*="ruffle" i], [data-ruffle], [data-ruffle-version], embed[type="application/x-shockwave-flash"], object[type="application/x-shockwave-flash"]';
         function clean() {
             try {
                 document.querySelectorAll(sel).forEach(el => el.remove());
-            } catch (e) {
-                // segurança caso query falhe em algum navegador
-            }
+            } catch (e) {}
         }
-        // Limpeza inicial
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', clean);
         } else {
             clean();
         }
-        // Observador para remover injeções futuras (extensões/plugins)
         try {
             const mo = new MutationObserver(clean);
             mo.observe(document.documentElement || document.body, { childList: true, subtree: true });
@@ -248,8 +245,3 @@
 </body>
 
 </html>
-
-
-
-
-
