@@ -21,7 +21,13 @@ def home():
         return f"Houve um erro técnico: {e}"
 
     return render_template('index.html', user=user_data, repos=repos_data)
+    
+@app.route('/projeto/<nome_do_projeto>')
+def detalhe_projeto(nome_do_projeto):
+    # lista de sub-itens
+    return render_template('projeto_detalhes.html', titulo=nome_do_projeto)
 
 if __name__ == '__main__':
 
     app.run(debug=True)
+
