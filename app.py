@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 # My Github user
-GITHUB_USER = "tsundere-e"
+GITHUB_USER = "Tsundere-e"
 
 @app.route('/')
 def home():
@@ -34,6 +34,7 @@ def detalhe_projeto(nome_do_projeto):
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
 
 
