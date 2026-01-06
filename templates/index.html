@@ -17,8 +17,8 @@
         }
 
         body {
-        font-family: 'Pacifico', cursive;
-        /*chamando a imagem da pasta static */
+        font-family: sans-serif;
+        /*fundo my melody */
         background-image: url("{{ url_for('static', filename='fundo.png') }}");
         background-repeat: repeat;
         background-size: 250px; 
@@ -122,7 +122,7 @@
 
         .project-card {
         background-color: rgba(255, 255, 255, 0.9); /* Branco com 90% de transparência */
-        backdrop-filter: blur(5px); /* Efeito de vidro embaçado atrás do cartão */
+        backdrop-filter: blur(10px); /* Efeito de vidro embaçado atrás do cartão */
         border: 2px solid var(--pink-bright);
         border-radius: 20px;
         padding: 20px;
@@ -191,20 +191,20 @@
                     <span class="lang-tag"># {{ repo.language }}</span>
                 {% endif %}
             </div>
-            {% endfor %}
-        {% else %}
+                {% endfor %}
+            {% endif %}
             <div class="card squishy" onmouseenter="playPop()">
                 <h3><a href="#">🍓 Projeto Moranguinho</a></h3>
-                <p>Meu primeiro código em Python! Em breve estarei criando robôs fofos aqui.</p>
+                <p>Meus códigos em Python! Em breve estarei criando aqui.</p>
                 <span class="lang-tag"># Python</span>
             </div>
             <div class="card squishy" onmouseenter="playPop()">
                 <h3><a href="#">🎀 My Melody API</a></h3>
-                <p>Uma ideia super legal para organizar tarefas usando o tema da Sanrio.</p>
-                <span class="lang-tag"># Flask</span>
+                <p>Template pro meu bot AI conversational do discord</p>
+                <span class="lang-tag"># APIKey</span>
             </div>
             <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="#">⭐ Engenharia do Futuro</a></h3>
+                <h3><a href="#">⭐ Engenharia da computação</a></h3>
                 <p>Repositório para meus estudos da faculdade de engenharia.</p>
                 <span class="lang-tag"># Learning</span>
             </div>
@@ -212,7 +212,7 @@
     </div>
 
     <a href="{{ user.html_url }}" class="btn-github squishy" onmouseenter="playPop()" target="_blank">
-        💖 Ver meu GitHub completo 🍓
+        💖 Veja meu GitHub completo 🍓
     </a>
     </div>
     <script>
@@ -248,5 +248,6 @@
 </body>
 
 </html>
+
 
 
