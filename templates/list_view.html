@@ -1,1 +1,33 @@
-//wip
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        body { background-color: #fff0f5; font-family: 'Comic Sans MS', cursive; color: #ff69b4; text-align: center; }
+        .spreadsheet { margin: 50px auto; border-collapse: collapse; width: 80%; background: white; border-radius: 15px; overflow: hidden; }
+        th, td { border: 2px solid #ffb6c1; padding: 15px; }
+        th { background-color: #ffb6c1; color: white; }
+    </style>
+</head>
+<body>
+    <h1>🍓 {{ title }} - My Project List 🍓</h1>
+    <table class="spreadsheet">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Viète Calculator</td>
+                <td>Ready to humble mathematicians</td>
+                <td><a href="#">Run now!</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a href="/">Go back home! 💖</a>
+</body>
+</html>
