@@ -3,17 +3,17 @@ import requests
 
 app = Flask(__name__)
 
-# Seu usuário do GitHub
+# My Github user
 GITHUB_USER = "tsundere-e"
 
 @app.route('/')
 def home():
     try:
-        # Pega seus dados e repositórios
+        # repository
         user_data = requests.get(f"https://api.github.com/users/{GITHUB_USER}").json()
         repos_data = requests.get(f"https://api.github.com/users/{GITHUB_USER}/repos?sort=updated").json()
         
-        # Se der erro na API (limite de requisições)
+        # api error
         if 'message' in user_data:
             return "Erro: O GitHub não deixou eu ver seu perfil agora. Tente em alguns minutos! 🍓"
             
@@ -23,4 +23,5 @@ def home():
     return render_template('index.html', user=user_data, repos=repos_data)
 
 if __name__ == '__main__':
+
     app.run(debug=True)
