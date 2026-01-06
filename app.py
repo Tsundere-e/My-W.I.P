@@ -35,13 +35,14 @@ def portal(card_name):
         return render_template('github_preview.html', title="My Melody API")
     
     elif card_name == 'engineering':
-        return render_template('diary_view.html', title="Engineering Journal")
+        return render_template('diary_view.html', title="Computer Engineering")
     
-    return redirect('/') 
+    return redirect('/') #
 
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
 
 
