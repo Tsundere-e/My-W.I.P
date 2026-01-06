@@ -12,10 +12,10 @@ def home():
         user_data = requests.get(f"https://api.github.com/users/{GITHUB_USER}").json()
         all_repos = requests.get(f"https://api.github.com/users/{GITHUB_USER}/repos?sort=updated").json()
         
-        # Aqui estão os dois que você quer ocultar! 🤫
+        # hidden 🤫
         esconder = ["My-W.I.P", "Tsundere-e"]
 
-        # Filtramos para mostrar apenas os que não estão na lista negra
+        # Filter
         repos_data = [repo for repo in all_repos if repo['name'] not in esconder]
             
         if 'message' in user_data:
@@ -34,5 +34,6 @@ def detalhe_projeto(nome_do_projeto):
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
 
