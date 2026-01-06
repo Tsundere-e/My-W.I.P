@@ -26,14 +26,18 @@ def home():
 
     return render_template('index.html', user=user_data, repos=repos_data)
     
-@app.route('/projeto/<nome_do_projeto>')
-def detalhe_projeto(nome_do_projeto):
-    # lista de sub-itens
-    return render_template('projeto_detalhes.html', titulo=nome_do_projeto)
+@app.route('/category/<category_name>')
+def category(category_name):
+    return render_template('category.html', category=category_name)
+    
+@app.route('/run/<project_name>')
+def run_project(project_name):
+    return render_template('executor.html', project=project_name)
 
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
 
 
