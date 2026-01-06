@@ -195,17 +195,17 @@
                 {% endfor %}
             {% endif %}
             <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="#">🍓 Strawberry Project</a></h3>
+                <h3><a href="{{ url_for('portal', card_name='strawberry') }}">🍓 Strawberry Project</a></h3>
                 <p>My Python code! I'll be adding projects here soon.</p>
                 <span class="lang-tag"># Python</span>
             </div>
             <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="#">🎀 My Melody API</a></h3>
+                <h3><a href="{{ url_for('portal', card_name='mymelody') }}">🎀 My Melody API</a></h3>
                 <p>Template for my AI conversational Discord bot</p>
                 <span class="lang-tag"># API</span>
             </div>
             <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="#">⭐ Computer Engineering</a></h3>
+                <h3><a href="{{ url_for('portal', card_name='engineering') }}">⭐ Computer Engineering</a></h3>
                 <p>Repository for my engineering studies.</p>
                 <span class="lang-tag"># Learning</span>
             </div>
@@ -245,3 +245,4 @@
 </body>
 
 </html>
+
