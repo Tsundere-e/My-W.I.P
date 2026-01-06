@@ -1,5 +1,3 @@
-#My-W.I.P(Work in Progress)
-
 Welcome to my creative space! This is my main portfolio in which I'm applying my full stack knowledge.
 
 Here are the technologies I used:
