@@ -26,17 +26,23 @@ def home():
 
     return render_template('index.html', user=user_data, repos=repos_data)
     
-@app.route('/category/<category_name>')
-def category(category_name):
-    return render_template('category.html', category=category_name)
+@app.route('/portal/<card_name>')
+def portal(card_name):
+    if card_name == 'strawberry':
+        return render_template('list_view.html', title="Strawberry Project")
     
-@app.route('/run/<project_name>')
-def run_project(project_name):
-    return render_template('executor.html', project=project_name)
+    elif card_name == 'mymelody':
+        return render_template('github_preview.html', title="My Melody API")
+    
+    elif card_name == 'engineering':
+        return render_template('diary_view.html', title="Engineering Journal")
+    
+    return redirect('/') 
 
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
 
 
