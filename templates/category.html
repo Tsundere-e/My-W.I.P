@@ -1,0 +1,24 @@
+<div class="content-panel">
+    <h2>📂 Category: {{ category.capitalize() }}</h2>
+    
+    <table class="project-table">
+        <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Viète's Trigonometry Calculator</td>
+                <td>Mathematics / Python</td>
+                <td><span class="status-ready">Ready</span></td>
+                <td>
+                    <a href="{{ url_for('run_project', project_name='viete-calculator') }}" class="btn-open">Open App</a>
+                </td>
+            </tr>
+            </tbody>
+    </table>
+</div>
