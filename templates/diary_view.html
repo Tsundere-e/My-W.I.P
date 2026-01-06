@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Journey| {{ user.login }}</title>
+    <title>Diary | {{ title }}</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <style>
         /* site colors */
@@ -14,157 +14,146 @@
             --pink-soft: #ffe4e9; 
             --pink-bright: #ff85a2; 
             --strawberry: #ff4d6d; 
-            --bg-pattern: #fff5f6; 
+            --paper: #ffffff;
         }
 
         body {
-        font-family: sans-serif;
-        /* background pattern */
-        background-image: url("{{ url_for('static', filename='fundo.png') }}");
-        background-repeat: repeat;
-        background-size: 250px; 
-        background-attachment: fixed; 
-        background-color: #E89EB8; 
-        color: #7a3e48;
-        margin: 0;
-        padding: 40px;
+            font-family: 'Quicksand', sans-serif;
+            background-image: url("{{ url_for('static', filename='fundo.png') }}");
+            background-repeat: repeat;
+            background-size: 250px; 
+            background-attachment: fixed; 
+            background-color: #E89EB8; 
+            margin: 0;
+            padding: 20px;
         }
 
-        .header-wrap { text-align: center; }
+        h1 { font-family: 'Pacifico', cursive; color: var(--strawberry); text-shadow: 2px 2px white; text-align: center; }
 
-        .header { margin-bottom: 50px; position: relative; display: inline-block; }
-
-        /* GitHub avatar */
-        .avatar {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            display: block;
-            margin: 0 auto;
-            object-fit: cover;
-            background: transparent;
-            border: 4px solid rgba(255,255,255,0.9);
+        /* diary container */
+        .diary-container {
+            display: flex;
+            max-width: 1000px;
+            margin: 20px auto;
+            gap: 20px;
+            height: 70vh;
         }
 
-         h1 { font-size: 2.8em; color: var(--strawberry); margin-top: 20px; text-shadow: 2px 2px white; }
-        .bio { font-size: 1.2em; max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
-
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 25px; 
-            max-width: 1000px; 
-            margin: 0 auto; 
+        /* sidebar/calendar list */
+        .diary-sidebar {
+            width: 30%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 20px;
+            overflow-y: auto;
+            border: 2px solid var(--pink-soft);
         }
 
-        .card { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 35px; 
-            border: 3px solid var(--pink-soft); 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            position: relative;
-            box-shadow: 0 8px 0 var(--pink-soft);
+        .date-item {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid transparent;
         }
 
-        .card:hover { 
-            transform: translateY(-10px); 
-            border-color: var(--pink-bright); 
-            box-shadow: 0 12px 0 var(--pink-bright);
+        .date-item:hover {
+            transform: scale(0.95);
+            border-color: var(--pink-bright);
+            opacity: 0.8;
         }
 
-        /* Strawberry icon on each card */
-        .card::after { 
-            content: '🍓'; 
-            position: absolute; 
-            bottom: 15px; 
-            right: 20px; 
-            font-size: 1.5em; 
-        }
-
-        h3 a { color: var(--strawberry); text-decoration: none; font-size: 1.4em; }
-        
-        .lang-tag {
+        .date-item.active {
             background: var(--pink-soft);
-            color: var(--strawberry);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: bold;
+            border-color: var(--pink-bright);
         }
 
-        .btn-github { 
-            background: var(--strawberry); 
-            color: white !important; 
-            padding: 8px 16px; 
-            border-radius: 30px; 
-            display: block; 
-            margin: 20px auto; 
-            font-size: 1em;
-            box-shadow: 0 6px 0 #d93d5a;
-            transition: 0.12s;
-            text-decoration: none;
-            text-align: center;
-            width: auto;
-            max-width: 80%;
-        }
-
-        .btn-github:active { transform: translateY(4px); box-shadow: 0 4px 0 #d93d5a; }
-        /* Jelly effect */
-        .squishy {
-        transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-        cursor: pointer;
-        }
-
-        /* Shrinks slightly on hover */
-        .squishy:hover {
-        transform: scale(0.9);
-        }
-
-        .project-card {
-        background-color: rgba(255, 255, 255, 0.9); /* Branco com 90% de transparência */
-        backdrop-filter: blur(10px); /* Efeito de vidro embaçado atrás do cartão */
-        border: 2px solid var(--pink-bright);
-        border-radius: 20px;
-        padding: 20px;
-        }
-
-        /* Main panel with translucent background for readability */
-        .content-panel {
-            max-width: 1100px;
-            margin: 24px auto;
-            background: rgba(255,255,255,0.55);
-            -webkit-backdrop-filter: blur(8px);
-            backdrop-filter: blur(8px);
-            border-radius: 28px;
-            padding: 28px;
-            box-shadow: 0 10px 30px rgba(122,62,72,0.06);
+        /* paper sheet */
+        .diary-page {
+            flex: 1;
+            background: var(--paper);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.05);
             position: relative;
-            overflow: visible;
+            background-image: linear-gradient(#e5e5e5 1px, transparent 1px);
+            background-size: 100% 2.5rem;
+            line-height: 2.5rem;
         }
 
-        .content-panel::before {
+        .diary-page::before {
             content: '';
             position: absolute;
-            left: 50%;
+            left: 40px;
             top: 0;
-            transform: translateX(-50%);
-            width: calc(100% + 40px);
-            height: calc(100% + 36px);
-            background: rgba(255,255,255,0.28);
-            filter: blur(18px);
-            border-radius: 34px;
-            z-index: -1;
-            pointer-events: none;
+            width: 2px;
+            height: 100%;
+            background: #ffb6c1;
         }
 
-        /* If Ruffle is injected by the browser, hide its elements */
-        ruffle-embed, ruffle-player, .ruffle, .RufflePlayer, embed[type="application/x-shockwave-flash"], object[type="application/x-shockwave-flash"] {
-            display: none !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
+        .page-content {
+            margin-left: 30px;
+            color: #4a4a4a;
         }
 
-        /* Volta ao normal quando o mouse sai (o transition acima cuida do 'pop') */
+        .cute-link {
+            color: var(--strawberry);
+            text-decoration: underline;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .cute-link:hover {
+            transform: scale(0.9);
+            opacity: 0.7;
+        }
+
+        .btn-home {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            background: var(--strawberry);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            box-shadow: 0 5px 0 #d93d5a;
+        }
     </style>
-    </head>
+</head>
+<body>
+
+    <h1>🍓 {{ title }}</h1>
+
+    <div class="diary-container">
+        <div class="diary-sidebar">
+            <div class="date-item active">
+                <b>Jan 06, 2026</b><br>
+                <small>Logic Gates Study</small>
+            </div>
+            <div class="date-item">
+                <b>Jan 05, 2026</b><br>
+                <small>Python Flask Setup</small>
+            </div>
+            <div class="date-item">
+                <b>Jan 04, 2026</b><br>
+                <small>Circuit Simulation</small>
+            </div>
+        </div>
+
+        <div class="diary-page">
+            <div class="page-content">
+                <h2 style="margin: 0; line-height: 1;">Computer Engineering Notes</h2>
+                <p>Today I was exploring how logic gates form the basis of all computation. It's fascinating how simple high/low voltages can create complex logic!</p>
+                <p>Started working on the trigonometry calculator as well. The Viète formula is quite elegant when implemented in Python.</p>
+            </div>
+        </div>
+    </div>
+
+    <a href="/" class="btn-home">💖 Back Home</a>
+
+</body>
+</html>
