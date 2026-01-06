@@ -9,13 +9,17 @@ GITHUB_USER = "tsundere-e"
 @app.route('/')
 def home():
     try:
-        # repository
         user_data = requests.get(f"https://api.github.com/users/{GITHUB_USER}").json()
-        repos_data = requests.get(f"https://api.github.com/users/{GITHUB_USER}/repos?sort=updated").json()
+        all_repos = requests.get(f"https://api.github.com/users/{GITHUB_USER}/repos?sort=updated").json()
         
-        # api error
+        # Aqui estão os dois que você quer ocultar! 🤫
+        esconder = ["My-W.I.P", "Tsundere-e"]
+
+        # Filtramos para mostrar apenas os que não estão na lista negra
+        repos_data = [repo for repo in all_repos if repo['name'] not in esconder]
+            
         if 'message' in user_data:
-            return "Erro: O GitHub não deixou eu ver seu perfil agora. Tente em alguns minutos! 🍓"
+            return "Erro: O GitHub não deixou eu ver seu perfil agora. 🍓"
             
     except Exception as e:
         return f"Houve um erro técnico: {e}"
@@ -30,4 +34,5 @@ def detalhe_projeto(nome_do_projeto):
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
