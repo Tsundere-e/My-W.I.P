@@ -197,7 +197,56 @@
     </div>
 
     <p class="bio">{{ user.bio if user.bio else "Future computer engineering student seeking strawberries and code! 🍓💻" }}</p>
+    <div class="portfolio-action-container">
+    <a href="https://tsundere-e.onrender.com" target="_blank" class="strawberry-link-btn">
+        Meu Portfolio ✨
+    </a>
+    </div>
 
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
+
+    .portfolio-action-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 1.5rem 0; /* Adjusts vertical spacing between title and bio */
+    }
+
+    .strawberry-link-btn {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        
+        border: 2px solid #ffb6c1; 
+        border-radius: 25px;
+        
+        color: #ff4d6d;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        font-size: 16px;
+        text-decoration: none;
+        letter-spacing: 0.5px;
+        
+        padding: 12px 45px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(255, 182, 193, 0.2);
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .strawberry-link-btn:hover {
+        background: #ffb6c1;
+        color: white;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
+    }
+
+    .strawberry-link-btn:active {
+        transform: translateY(0);
+    }
+    </style>
     <div class="grid">
         {% if repos and repos|length > 0 and not repos.message %}
             {% for repo in repos[:6] %}
@@ -261,5 +310,6 @@
 </body>
 
 </html>
+
 
 
