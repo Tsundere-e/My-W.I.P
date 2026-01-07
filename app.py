@@ -31,6 +31,9 @@ def home():
 def portal(card_name):
     if card_name == 'strawberry':
         return render_template('list_view.html', title="Strawberry Project")
+        
+    elif card_name == 'portfolio':
+        return redirect('https://tsundere-e.onrender.com')
     
     elif card_name == 'mymelody':
         return render_template('github_preview.html', title="My Melody API")
@@ -45,3 +48,4 @@ if __name__ == '__main__':
     # get port from environment for deploy
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
