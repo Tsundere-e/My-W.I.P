@@ -48,17 +48,20 @@ def portal(card_name):
 def get_response():
     try:
         data = request.json
-        user_message = data.get('message')
+        user_msg = data.get('message')
+        
         prompt = (
             f"Act as My Melody, a Senior Engineering Math tutor. Sweet personality "
             f"using 🍓 and 🌸, but highly technical. Focus on Viète's formulas, "
-            f"irrational roots, and complex Math 2 problems. Help with: {user_message}"
-        )
+            f"irrational roots, and complex Math 2 problems. Help with: {user_msg}"
+         )
         response = model.generate_content(prompt)
         return jsonify({'reply': response.text})
-    except Exception:
-        return jsonify({'reply': "My melody ears are hurting... error! 🍓"}), 500
-
+        except Exception as e:
+        # error check
+        return jsonify({'reply': f"Erro técnico: {str(e)} 🍓"}), 500
+        
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
