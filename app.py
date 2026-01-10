@@ -1,10 +1,13 @@
-from flask import Flask, render_template, redirect
-import requests
 import os
+import requests
+import google.generativeai as genai
+from flask import Flask, render_template, redirect, request, jsonify
 
 app = Flask(__name__)
 
-# github user
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+model = genai.GenerativeModel('gemini-1.5-flash')
+
 GITHUB_USER = "Tsundere-e"
 
 @app.route('/')
@@ -13,10 +16,7 @@ def home():
         user_data = requests.get(f"https://api.github.com/users/{GITHUB_USER}").json()
         all_repos = requests.get(f"https://api.github.com/users/{GITHUB_USER}/repos?sort=updated").json()
         
-        # hidden repos
         esconder = ["My-W.I.P", "Tsundere-e"]
-
-        # filter
         repos_data = [repo for repo in all_repos if repo['name'] not in esconder]
             
         if 'message' in user_data:
@@ -42,14 +42,23 @@ def portal(card_name):
     elif card_name == 'engineering':
         return render_template('diary_view.html', title="Computer Engineering")
 
+@app.route('/get_response', methods=['POST'])
+def get_response():
+    try:
+        data = request.json
+        user_message = data.get('message')
+        
+        prompt = (
+            f"Act as My Melody, a Senior Engineering Math tutor. Sweet personality "
+            f"using 🍓 and 🌸, but highly technical. Focus on Viète's formulas, "
+            f"irrational roots, and complex Math 2 problems. Help with: {user_message}"
+        )
+        
+        response = model.generate_content(prompt)
+        return jsonify({'reply': response.text})
+    except Exception:
+        return jsonify({'reply': "My melody ears are hurting... error! 🍓"}), 500
 
-# production config
 if __name__ == '__main__':
-    # get port from environment for deploy
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
-
-
-
-
