@@ -248,33 +248,34 @@
     }
     </style>
     <div class="grid">
-        {% if repos and repos|length > 0 and not repos.message %}
-            {% for repo in repos[:6] %}
-            <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a></h3>
-                <p>{{ repo.description if repo.description else "Um projeto secreto e maravilhoso." }}</p>
-                {% if repo.language %}
-                    <span class="lang-tag"># {{ repo.language }}</span>
-                {% endif %}
-            </div>
-                {% endfor %}
+    {% if repos is iterable and repos is not string %}
+        {% for repo in repos[:6] %}
+        <div class="card squishy" onmouseenter="playPop()">
+            <h3><a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a></h3>
+            <p>{{ repo.description if repo.description else "Um projeto secreto e maravilhoso." }}</p>
+            {% if repo.language %}
+                <span class="lang-tag"># {{ repo.language }}</span>
             {% endif %}
-            <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="{{ url_for('portal', card_name='strawberry') }}">🍓 Strawberry Project</a></h3>
-                <p>My Python code! I'll be adding projects here soon.</p>
-                <span class="lang-tag"># Python</span>
-            </div>
-            <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="{{ url_for('portal', card_name='mymelody') }}">🎀 My Melody API</a></h3>
-                <p>Template for my AI conversational Discord bot</p>
-                <span class="lang-tag"># API</span>
-            </div>
-            <div class="card squishy" onmouseenter="playPop()">
-                <h3><a href="{{ url_for('portal', card_name='engineering') }}">⭐ Computer Engineering</a></h3>
-                <p>Repository for my engineering studies.</p>
-                <span class="lang-tag"># Learning</span>
-            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card squishy" onmouseenter="playPop()">
+        <h3><a href="{{ url_for('portal', card_name='strawberry') }}">🍓 Strawberry Project</a></h3>
+        <p>My Python code! I'll be adding projects here soon.</p>
+        <span class="lang-tag"># Python</span>
     </div>
+    <div class="card squishy" onmouseenter="playPop()">
+        <h3><a href="{{ url_for('portal', card_name='mymelody') }}">🎀 My Melody API</a></h3>
+        <p>Template for my AI conversational Discord bot</p>
+        <span class="lang-tag"># API</span>
+    </div>
+    <div class="card squishy" onmouseenter="playPop()">
+        <h3><a href="{{ url_for('portal', card_name='engineering') }}">⭐ Computer Engineering</a></h3>
+        <p>Repository for my engineering studies.</p>
+        <span class="lang-tag"># Learning</span>
+    </div>
+</div>
 
     <a href="{{ user.html_url }}" class="btn-github squishy" onmouseenter="playPop()" target="_blank">
         💖 View my full GitHub 🍓
@@ -310,3 +311,4 @@
 </body>
 
 </html>
+
