@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* site colors */
         :root { 
             --pink-soft: #ffe4e9; 
             --pink-bright: #ff85a2; 
@@ -31,7 +30,6 @@
             min-height: 100vh;
         }
 
-        /* chat window */
         .chat-container {
             width: 90%;
             max-width: 500px;
@@ -46,7 +44,6 @@
             overflow: hidden;
         }
 
-        /* chat header */
         .chat-header {
             background: var(--pink-soft);
             padding: 15px 20px;
@@ -62,7 +59,6 @@
             border-radius: 50%;
             background-color: white;
             border: 2px solid var(--pink-bright);
-            /* # PLACEHOLDER FOR AVATAR IMAGE # */
             background-image: url("{{ url_for('static', filename='melody_avatar.png') }}");
             background-size: cover;
         }
@@ -75,7 +71,6 @@
         .chat-status b { color: var(--strawberry); font-size: 1.1em; }
         .chat-status span { font-size: 0.8em; color: #888; }
 
-        /* messages area */
         .chat-messages {
             flex: 1;
             padding: 20px;
@@ -94,7 +89,6 @@
             position: relative;
         }
 
-        /* melody message */
         .bubble.bot {
             align-self: flex-start;
             background: white;
@@ -103,7 +97,6 @@
             border-bottom-left-radius: 5px;
         }
 
-        /* user message */
         .bubble.user {
             align-self: flex-end;
             background: var(--strawberry);
@@ -111,7 +104,6 @@
             border-bottom-right-radius: 5px;
         }
 
-        /* input area */
         .chat-input-area {
             padding: 20px;
             background: white;
@@ -161,44 +153,6 @@
         .btn-home:hover { background: var(--strawberry); }
     </style>
 </head>
-    <script>
-    const input = document.querySelector('.chat-input');
-    const button = document.querySelector('.send-btn');
-    const chatMessages = document.querySelector('.chat-messages');
-
-    function addMessage(text, side) {
-        const bubble = document.createElement('div');
-        bubble.classList.add('bubble', side);
-        bubble.innerText = text;
-        chatMessages.appendChild(bubble);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    async function sendMessage() {
-        const message = input.value.trim();
-        if (!message) return;
-
-        addMessage(message, 'user');
-        input.value = '';
-
-        try {
-            const response = await fetch('/get_response', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: message })
-            });
-            const data = await response.json();
-            addMessage(data.reply, 'bot');
-        } catch (error) {
-            addMessage("Ops! Deu um errinho... 🍓", 'bot');
-        }
-    }
-
-    button.addEventListener('click', sendMessage);
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
-</script>
 <body>
 
     <div class="chat-container">
@@ -212,15 +166,7 @@
 
         <div class="chat-messages">
             <div class="bubble bot">
-                Hello! I'm My Melody! Ask me anything about complex math or just chat with me! 🌸
-            </div>
-            
-            <div class="bubble user">
-                Hi! Can you explain what a Riemann Zeta Function is?
-            </div>
-
-            <div class="bubble bot">
-                Oh, that's a fascinating problem! It's related to the distribution of prime numbers... 🍓
+                Hello! I'm My Melody! Ask me anything about complex math! 🌸
             </div>
         </div>
 
@@ -232,5 +178,43 @@
 
     <a href="/" class="btn-home">💖 Back Home</a>
 
+    <script>
+        const input = document.querySelector('.chat-input');
+        const button = document.querySelector('.send-btn');
+        const chatMessages = document.querySelector('.chat-messages');
+
+        function addMessage(text, side) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble', side);
+            bubble.innerText = text;
+            chatMessages.appendChild(bubble);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            input.value = '';
+
+            try {
+                const response = await fetch('/get_response', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+                const data = await response.json();
+                addMessage(data.reply, 'bot');
+            } catch (error) {
+                addMessage("My melody ears are hurting... error! 🍓", 'bot');
+            }
+        }
+
+        button.addEventListener('click', sendMessage);
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
 </body>
 </html>
