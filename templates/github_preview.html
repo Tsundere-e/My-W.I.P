@@ -161,6 +161,44 @@
         .btn-home:hover { background: var(--strawberry); }
     </style>
 </head>
+    <script>
+    const input = document.querySelector('.chat-input');
+    const button = document.querySelector('.send-btn');
+    const chatMessages = document.querySelector('.chat-messages');
+
+    function addMessage(text, side) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble', side);
+        bubble.innerText = text;
+        chatMessages.appendChild(bubble);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const message = input.value.trim();
+        if (!message) return;
+
+        addMessage(message, 'user');
+        input.value = '';
+
+        try {
+            const response = await fetch('/get_response', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            addMessage(data.reply, 'bot');
+        } catch (error) {
+            addMessage("Ops! Deu um errinho... 🍓", 'bot');
+        }
+    }
+
+    button.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+</script>
 <body>
 
     <div class="chat-container">
